@@ -23,6 +23,10 @@ app.get("/", (req, res) => {
   res.render("index", locals);
 });
 
+app.get("*", (req, res) => {
+  res.status(404).render("404");
+});
+
 const port = process.env.PORT || 3000;
 
 const start = async () => {
