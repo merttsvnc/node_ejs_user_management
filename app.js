@@ -3,12 +3,33 @@ const express = require("express");
 const expressLayout = require("express-ejs-layouts");
 const app = express();
 const connectDB = require("./server/config/db");
+const { flash } = require("express-flash-message");
+const session = require("express-session");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Static file
 app.use(express.static("public"));
+
+// express session
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+    },
+  })
+);
+
+// flash messages
+app.use(
+  flash({
+    sessionKeyName: "express-flash-message",
+  })
+);
 
 // Template engine
 app.use(expressLayout);

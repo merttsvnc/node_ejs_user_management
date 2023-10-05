@@ -6,11 +6,15 @@ const Customer = require("../models/Customer");
  */
 
 exports.homepage = async (req, res) => {
+  const messages = await req.consumeFlash("info");
   const locals = {
     title: "NodeJS",
     description: "Free NodeJS User Management System",
   };
-  res.render("index", locals);
+  res.render("index", {
+    locals,
+    messages,
+  });
 };
 
 /*
@@ -44,6 +48,7 @@ exports.postCustomer = async (req, res) => {
   });
   try {
     await Customer.create(newCustomer);
+    await req.flash("info", "New customer has been added");
     res.redirect("/");
   } catch (error) {
     console.log(error);
