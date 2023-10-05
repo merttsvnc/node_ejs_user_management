@@ -8,16 +8,26 @@ const Customer = require("../models/Customer");
 exports.homepage = async (req, res) => {
   const messages = await req.consumeFlash("info");
   const locals = {
-    title: "NodeJS",
-    description: "Free NodeJS User Management System",
+    title: "NodeJs",
+    description: "Free NodeJs User Management System",
   };
 
+  let perPage = 12;
+  let page = req.query.page || 1;
+
   try {
-    const customers = await Customer.find({}).limit(22);
+    const customers = await Customer.aggregate([{ $sort: { createdAt: -1 } }])
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+    const count = await Customer.count();
+
     res.render("index", {
       locals,
-      messages,
       customers,
+      current: page,
+      pages: Math.ceil(count / perPage),
+      messages,
     });
   } catch (error) {
     console.log(error);
