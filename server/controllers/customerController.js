@@ -11,10 +11,17 @@ exports.homepage = async (req, res) => {
     title: "NodeJS",
     description: "Free NodeJS User Management System",
   };
-  res.render("index", {
-    locals,
-    messages,
-  });
+
+  try {
+    const customers = await Customer.find({}).limit(22);
+    res.render("index", {
+      locals,
+      messages,
+      customers,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 /*
