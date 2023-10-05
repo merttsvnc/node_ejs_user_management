@@ -1,3 +1,5 @@
+const Customer = require("../models/Customer");
+
 /*
  * GET /
  * Homepage
@@ -31,10 +33,19 @@ exports.addCustomer = async (req, res) => {
 
 exports.postCustomer = async (req, res) => {
   console.log(req.body);
+  const { firstName, lastName, tel, email, description } = req.body;
 
-  const locals = {
-    title: "New Customer Added",
-    description: "Free NodeJS User Management System",
-  };
-  res.render("customer/add", locals);
+  const newCustomer = new Customer({
+    firstName,
+    lastName,
+    tel,
+    email,
+    description,
+  });
+  try {
+    await Customer.create(newCustomer);
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
 };
