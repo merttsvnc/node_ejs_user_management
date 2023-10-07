@@ -54,19 +54,40 @@ exports.addCustomer = async (req, res) => {
 
 exports.postCustomer = async (req, res) => {
   console.log(req.body);
-  const { firstName, lastName, tel, email, description } = req.body;
+  const { firstName, lastName, tel, email, details } = req.body;
 
   const newCustomer = new Customer({
     firstName,
     lastName,
     tel,
     email,
-    description,
+    details,
   });
   try {
     await Customer.create(newCustomer);
     await req.flash("info", "New customer has been added");
     res.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+/*
+ * GET /
+ *  View Customer
+ */
+
+exports.viewCustomer = async (req, res) => {
+  try {
+    const customer = await Customer.findOne({ _id: req.params.id });
+    const locals = {
+      title: "View Customer",
+      description: "Free NodeJs User Management System",
+    };
+    res.render("customer/view", {
+      locals,
+      customer,
+    });
   } catch (error) {
     console.log(error);
   }
