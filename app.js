@@ -5,9 +5,11 @@ const app = express();
 const connectDB = require("./server/config/db");
 const { flash } = require("express-flash-message");
 const session = require("express-session");
+const methodOverride = require("method-override");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(methodOverride("_method"));
 
 // Static file
 app.use(express.static("public"));

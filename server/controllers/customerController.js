@@ -92,3 +92,47 @@ exports.viewCustomer = async (req, res) => {
     console.log(error);
   }
 };
+
+/*
+ * GET /
+ * Edit Customer
+ */
+
+exports.editCustomer = async (req, res) => {
+  try {
+    const customer = await Customer.findOne({ _id: req.params.id });
+    const locals = {
+      title: "Edit Customer",
+      description: "Free NodeJs User Management System",
+    };
+    res.render("customer/edit", {
+      locals,
+      customer,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+/*
+ * GET /
+ * Update Customer Data
+ */
+
+exports.editCustomerData = async (req, res) => {
+  try {
+    const { firstName, lastName, tel, email, details } = req.body;
+    await Customer.findByIdAndUpdate(req.params.id, {
+      firstName,
+      lastName,
+      tel,
+      email,
+      details,
+      updatedAt: Date.now(),
+    });
+    await res.redirect(`/edit/${req.params.id}`);
+    console.log("redirected");
+  } catch (error) {
+    console.log(error);
+  }
+};
