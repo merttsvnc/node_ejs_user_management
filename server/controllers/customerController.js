@@ -36,6 +36,23 @@ exports.homepage = async (req, res) => {
 
 /*
  * GET /
+ * About
+ */
+
+exports.about = async (req, res) => {
+  const locals = {
+    title: "About",
+    description: "Free NodeJS User Management System",
+  };
+  try {
+    res.render("about", locals);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+/*
+ * GET /
  * New Customer Form
  */
 
