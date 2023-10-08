@@ -136,3 +136,17 @@ exports.editCustomerData = async (req, res) => {
     console.log(error);
   }
 };
+
+/*
+ * GET /
+ * Update Customer Data
+ */
+
+exports.deleteCustomer = async (req, res) => {
+  try {
+    await Customer.findByIdAndDelete({ _id: req.params.id });
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
+};
